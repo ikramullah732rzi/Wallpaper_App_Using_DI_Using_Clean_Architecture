@@ -3,13 +3,13 @@ package com.example.voicerecording.presentation.screens
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.DownloadManager
+import android.app.WallpaperManager
 import android.content.Context
 import android.content.Context.DOWNLOAD_SERVICE
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Environment
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -44,9 +44,7 @@ import coil.request.ImageRequest
 import com.example.voicerecording.presentation.DetailScreen
 import com.example.voicerecording.presentation.HOME
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -108,7 +106,6 @@ fun DetailComposableScreen(navHostController: NavHostController, detailScreen: D
             //
 
 
-
             // Gradient for half screen
             Box(
                 modifier = Modifier
@@ -133,12 +130,7 @@ fun DetailComposableScreen(navHostController: NavHostController, detailScreen: D
             //-------------------------------------------
             Button(
                 onClick = {
-                    if (permission.status.isGranted){
-                        saveImagetoGallery(detailScreen.imageurl,context)
-                    }else{
-                        permission.launchPermissionRequest()
-                    }
-                    ////
+                    saveImagetoGallery(detailScreen.imageurl, context)
                 },
                 modifier = Modifier
                     .padding(bottom = 20.dp)
@@ -178,13 +170,12 @@ fun DetailComposableScreen(navHostController: NavHostController, detailScreen: D
                         start.linkTo(parent.start)
                         top.linkTo(shareButton.top)
                         bottom.linkTo(shareButton.bottom)
-
-
                     }
                     .size(50.dp)
                     .clip(CircleShape)
                     .background(Color.White)
                     .padding(10.dp)
+
 
             )
 
@@ -205,8 +196,10 @@ fun DetailComposableScreen(navHostController: NavHostController, detailScreen: D
 
 }
 
-fun saveImagetoGallery(imageurl:String,context: Context){
-    val downloadManager : DownloadManager = context.getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+
+fun saveImagetoGallery(imageurl: String, context: Context) {
+    val downloadManager: DownloadManager =
+        context.getSystemService(DOWNLOAD_SERVICE) as DownloadManager
     val uri = Uri.parse(imageurl)
     val request = DownloadManager.Request(uri)
         .setTitle("Wallpaper${imageurl}")
@@ -214,8 +207,10 @@ fun saveImagetoGallery(imageurl:String,context: Context){
         .setMimeType("image/jpeg")
         .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE)
         .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-        .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES,
-            "Wallpaper${imageurl}${System.currentTimeMillis()}"+".jpg")
+        .setDestinationInExternalPublicDir(
+            Environment.DIRECTORY_PICTURES,
+            "Wallpaper/wall${System.currentTimeMillis()}" + ".jpg"
+        )
     downloadManager.enqueue(request)
     Toast.makeText(context, "Successfully Downloaded", Toast.LENGTH_SHORT).show()
 

@@ -15,9 +15,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.voicerecording.domain.WallpaperViewModel
+import com.example.voicerecording.presentation.screens.DetailComposableScreen
 import com.example.voicerecording.presentation.screens.HomeScreen
 import com.example.voicerecording.presentation.screens.SplashScreen
-import com.example.voicerecording.presentation.screens.DetailComposableScreen
 import com.example.voicerecording.ui.theme.VoiceRecordingTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.serialization.Serializable
@@ -48,8 +48,9 @@ fun MainApp() {
 
     NavHost(
         navController = navHostController,
-        startDestination = SPLISHSCREEN
+        startDestination = HOME
     ) {
+
         composable<HOME> {
             HomeScreen(navHostController, wallpaperViewModel = hiltViewModel<WallpaperViewModel>())
         }
@@ -60,7 +61,6 @@ fun MainApp() {
         composable<SPLISHSCREEN>{
             SplashScreen(  navHostController)
         }
-
     }
 }
 

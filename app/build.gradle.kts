@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.voicerecording"
-        minSdk = 30
+        minSdk = 29
         compileSdk = 34 // Update to your target SDK if necessary
         targetSdk = 34
         versionCode = 1
